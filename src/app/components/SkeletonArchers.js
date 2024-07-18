@@ -27,7 +27,7 @@ function SkeletonArchers() {
             const isCrit = attackRoll === 20;
             const isCritFail = attackRoll === 1;
             const attackRollTotal = parseInt(attackRoll) + parseInt(attackRollModifier);
-            const hits = !isCritFail && parseInt(attackRollTotal) >= parseInt(enemyAC);
+            const hits = isCrit || (!isCritFail && parseInt(attackRollTotal) >= parseInt(enemyAC));
             let damageRoll = 0;
             let damageTotal = 0;
             const critDamage = isCrit ? parseInt(damageDiceSize) : 0;
