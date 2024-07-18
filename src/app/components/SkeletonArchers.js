@@ -18,7 +18,7 @@ function SkeletonArchers() {
         evt.preventDefault();
         const formData = new FormData(evt.target);
         const data = Object.fromEntries(formData);
-        const {numberOfAttacks, attackRollModifier, advantage, damageDiceSize, damageModifier, enemyAC } = data;
+        const {numberOfAttacks, attackRollModifier, damageDiceSize, damageModifier, enemyAC } = data;
     
         let attackResults = [];
         for (let i=0; i<numberOfAttacks; i++) {
@@ -109,11 +109,6 @@ function SkeletonArchers() {
                                 <option selected={attackRollModifier===0} key={attackRollModifier} value={attackRollModifier}>{attackRollModifier}</option>
                             )}
                         </select>
-                    </div>
-                
-                    <div>
-                        <label>Advantage?</label>
-                        <input name="advantage" type="checkbox"/>
                     </div>
                 </div>
 
