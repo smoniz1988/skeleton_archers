@@ -123,7 +123,7 @@ function SkeletonArchers() {
                     <h2>Damage Configuration</h2>
                     <div>
                         <label>Damage Die</label>
-                        <select name="damageDiceSize">
+                        <select name="damageDiceSize" defaultValue={6}>
                             {damageDiceSizes.map((damageDiceSize) => 
                                 <option key={damageDiceSize} value={damageDiceSize}>{`d${damageDiceSize}`}</option>
                             )}
