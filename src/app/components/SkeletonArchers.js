@@ -19,7 +19,7 @@ function SkeletonArchers() {
         evt.preventDefault();
         const formData = new FormData(evt.target);
         const data = Object.fromEntries(formData);
-        const {numberOfAttacks, attackRollModifier, damageDiceSize, damageModifier, enemyAC } = data;
+        const {numberOfAttacks, attackRollModifier, damageDiceSize, damageModifier, enemyAC=0 } = data;
     
         let attackResults = [];
         for (let i=0; i<numberOfAttacks; i++) {
@@ -90,6 +90,15 @@ function SkeletonArchers() {
         };
     };
 
+    const roundToTwo = (num) => {
+        return +(Math.round(num + "e+2")  + "e-2");
+    };
+
+    const getPercentage = (amt, total) => {
+        return roundToTwo((amt / total) * 100);
+    };
+
+   
  
   return (
     <div>
@@ -139,7 +148,7 @@ function SkeletonArchers() {
                     <h2>Enemy Configuration</h2>
                     <div>
                         <label>AC</label>
-                        <input type="text" name="enemyAC" defaultValue={16} />
+                        <input type="text" name="enemyAC" defaultValue={16} size={3} minLength={1} maxLength={3} />
                     </div>
                 </div>
 
@@ -163,9 +172,9 @@ function SkeletonArchers() {
                         <h2>Repent, sinners!</h2>
                         <ul>
                             <li>Attacks Made: {resultsSummary.totalAttacks}</li>
-                            <li>Crits: {resultsSummary.totalCrits}</li>
-                            <li>Hits: {resultsSummary.totalHits}</li>
-                            <li>Total Damage: {resultsSummary.totalDamage}</li>
+                            <li>Crits: {resultsSummary.totalCrits} ({getPercentage(resultsSummary.totalCrits, resultsSummary.totalHits)}%)</li>
+                            <li>Hits: {resultsSummary.totalHits} ({getPercentage(resultsSummary.totalHits, resultsSummary.totalAttacks)}%)</li>
+                            <li>Total Damage: {resultsSummary.totalDamage} / Average: {roundToTwo(resultsSummary.totalDamage / resultsSummary.totalHits)}</li>
                         </ul>
                         <table className='mt-6'>
                             <thead>
