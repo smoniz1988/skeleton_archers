@@ -5,3 +5,5 @@ Using React + Next.js
 Use `npm run dev` to run locally
 
 See package.json for build commands
+
+Enjoy your skellies!
