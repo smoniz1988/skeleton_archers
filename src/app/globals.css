@@ -31,3 +31,34 @@ body {
     text-wrap: balance;
   }
 }
+
+h1 {
+  font-size: 24px;
+}
+h2 { font-size: 20px; }
+
+label {
+  font-size: 18px;
+  margin-right: 10px;
+}
+
+input { color:black; }
+button {
+  background-color:white;
+  color: black;
+  padding:10px;
+  border-radius:10px;
+}
+
+select {
+  color:black;
+}
+
+table {
+  background-color:#eee;
+  color:black;
+  border:1px solid black;
+}
+table tr td { padding: 20px;   border:1px solid black; }
+table tr td.crit {background-color:green; font-weight: bold; }
+table tr td.crit-fail {background-color: red; font-weight: bold;}
