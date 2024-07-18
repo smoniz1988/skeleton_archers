@@ -105,7 +105,7 @@ function SkeletonArchers() {
                     <h2>Attack Configuration</h2>
                     <div>
                         <label>Number of Attacks</label>
-                        <input type="text" name="numberOfAttacks" defaultValue={24} />
+                        <input type="text" name="numberOfAttacks" maxLength={4} defaultValue={24} />
                     </div>
                 
                     <div>
