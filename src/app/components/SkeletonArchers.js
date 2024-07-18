@@ -1,5 +1,6 @@
 "use client";
 import React, {useState, useEffect} from 'react'
+import Image from 'next/image';
 
 function SkeletonArchers() {
     const attackRollModifiers = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0 , 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -92,8 +93,13 @@ function SkeletonArchers() {
  
   return (
     <div>
-        <h1>Skeleton Archers</h1>
-        <div>
+        <div style={{lineHeight: '150px'}}>
+            <Image className="float-left" src="/images/skeleton-archer.png" width="150" height="150"/>
+            <h1>Skeleton Archers</h1>
+        </div>
+ 
+       
+        <div className="clear-both">
            <form onSubmit={handleRepent}>
             <div className={'mt-6'}>
                     <h2>Attack Configuration</h2>
@@ -104,9 +110,9 @@ function SkeletonArchers() {
                 
                     <div>
                         <label>To Hit</label>
-                        <select name="attackRollModifier">
+                        <select name="attackRollModifier" defaultValue={0}>
                             {attackRollModifiers.map((attackRollModifier) => 
-                                <option selected={attackRollModifier===0} key={attackRollModifier} value={attackRollModifier}>{attackRollModifier}</option>
+                                <option key={attackRollModifier} value={attackRollModifier}>{attackRollModifier}</option>
                             )}
                         </select>
                     </div>
@@ -149,13 +155,12 @@ function SkeletonArchers() {
           
                 {results.length<=0 && (
                     <>
-                        <h2>Skeletons Ready to Deal  Justice...</h2>
-                        <span>Waiting on orders...</span>
+                        <h2>Skeletons awaiting orders...</h2>
                     </>
                 )}
                 {results.length>0 && (
                     <>
-                        <h2>Repent!</h2>
+                        <h2>Repent, sinners!</h2>
                         <ul>
                             <li>Attacks Made: {resultsSummary.totalAttacks}</li>
                             <li>Crits: {resultsSummary.totalCrits}</li>
