@@ -61,5 +61,5 @@ table {
   border:1px solid black;
 }
 table tr td { padding: 20px;   border:1px solid black; }
-table tr td.crit {background-color:green; font-weight: bold; }
-table tr td.crit-fail {background-color: red; font-weight: bold;}
+table tr td.crit {background-color:green; color:white;}
+table tr td.crit-fail {background-color: red; color:white;}

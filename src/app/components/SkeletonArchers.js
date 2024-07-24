@@ -1,15 +1,14 @@
 "use client";
 import React, {useState, useEffect} from 'react'
 import Image from 'next/image';
+import { rollAttack, rollDice, damageDiceSizes, ATTACK_MODES } from '../utility/Dice';
 
 function SkeletonArchers() {
     const attackRollModifiers = [-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 0 , 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    const damageDiceSizes = [4, 6, 8, 10, 12];
+   
     const [results, setResults] = useState([]);
     const [resultsSummary, setResultsSummary] = useState();
-    
-    const rollDice = (size) => Math.floor(Math.random() * size) + 1;
-
+ 
     const getClassNameForAttack = (res) => {
         if (res.isCrit) { return 'crit'; }
         if (res.isCritFail) { return 'crit-fail'};
@@ -19,15 +18,18 @@ function SkeletonArchers() {
         evt.preventDefault();
         const formData = new FormData(evt.target);
         const data = Object.fromEntries(formData);
-        const {numberOfAttacks, attackRollModifier, damageDiceSize, damageModifier, enemyAC=0 } = data;
+        const {numberOfAttacks, attackRollModifier, damageDiceSize, damageModifier, enemyAC=0, attackMode } = data;
     
         let attackResults = [];
         for (let i=0; i<numberOfAttacks; i++) {
-            const attackRoll = rollDice(20);
+            const rolls = rollAttack(attackMode);
+            const attackRoll = rolls[0];
+            console.log({rolls, chosenRoll: attackRoll});
+            const attackRollTotal = parseInt(attackRoll) + parseInt(attackRollModifier);
             const isCrit = attackRoll === 20;
             const isCritFail = attackRoll === 1;
-            const attackRollTotal = parseInt(attackRoll) + parseInt(attackRollModifier);
             const hits = isCrit || (!isCritFail && parseInt(attackRollTotal) >= parseInt(enemyAC));
+
             let damageRoll = 0;
             let damageTotal = 0;
             const critDamage = isCrit ? parseInt(damageDiceSize) : 0;
@@ -38,6 +40,7 @@ function SkeletonArchers() {
             }
 
             attackResults.push({
+                rolls,
                 attackRoll,
                 attackRollModifier,
                 attackRollTotal,
@@ -55,7 +58,6 @@ function SkeletonArchers() {
     };
 
     const getDamageString = (res) => {
-        console.log(res);
         let str = '';
         if (res.hits) {
             str += ` (`;
@@ -97,6 +99,18 @@ function SkeletonArchers() {
     const getPercentage = (amt, total) => {
         return roundToTwo((amt / total) * 100);
     };
+    
+    const getRollStrings = (res) => {
+        let str='';
+        console.log({res});
+        res.rolls.forEach((roll) => {
+            str+= roll + '+' + res.attackRollModifier;
+
+        })
+        str += res.rolls;
+  
+        return str;
+    };
 
    
  
@@ -124,6 +138,19 @@ function SkeletonArchers() {
                                 <option key={attackRollModifier} value={attackRollModifier}>{attackRollModifier}</option>
                             )}
                         </select>
+                    </div>
+
+                    <div>
+                        <label>Attack Mode</label>
+                        <select name="attackMode">
+                        {ATTACK_MODES.map((attackMode) => {
+                            return (
+                               <option value={attackMode}>{attackMode}</option>
+                            );
+                         })}
+                        </select>
+                            
+                       
                     </div>
                 </div>
 
@@ -184,7 +211,18 @@ function SkeletonArchers() {
                             {results.map((res, index) => 
                                 <tr key={`attack-${index}`}>
                                     <td>{index + 1}</td>
-                                    <td className={getClassNameForAttack(res)}>{res.attackRollTotal} ({res.attackRoll} + {res.attackRollModifier})</td>
+                                    <td className={getClassNameForAttack(res)}>
+                                        {res.rolls.map((roll, rollIndex) => {
+                                            const rollTotal = parseInt(roll) + parseInt(res.attackRollModifier);
+                                            const rollString = `${rollTotal} (${roll} + ${res.attackRollModifier})`;
+                                            const className = rollIndex===0 ? '' : 'line-through';
+                                            return (
+                                                <div className={className}>
+                                                   {rollString}
+                                                </div>
+                                            );
+                                        })}
+                                    </td>
                                     <td>{res.hits ? 'Yes' : 'No'}</td>
                                     <td>{res.damageTotal}</td>
                                     <td>{getDamageString(res)}</td>
